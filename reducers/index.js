@@ -1,4 +1,4 @@
-import { RECIEVE_DECKS, ADD_DECK } from "../actions";
+import { RECEIVE_DECKS, ADD_DECK } from "../actions";
 
 const initialState = {
   React: {
@@ -26,9 +26,9 @@ const initialState = {
   }
 };
 
-function decks(state = initialState, action) {
+function decks(state = {}, action) {
   switch (action.type) {
-    case RECIEVE_DECKS:
+    case RECEIVE_DECKS:
       return {
         ...state,
         ...action.decks

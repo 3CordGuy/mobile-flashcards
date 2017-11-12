@@ -3,12 +3,13 @@ import { AsyncStorage } from "react-native";
 export const STORAGE_KEY = "mobileflashcards:decks";
 
 export function getDecks() {
-  return AsyncStorage.getItem(STORAGE_KEY);
+  return AsyncStorage.getItem(STORAGE_KEY).then(decks => JSON.parse(decks));
 }
 
-export function getDeck(id) {
-  AsyncStorage.getItem(STORAGE_KEY).then(decks => JSON.parse(decks)[id]);
-}
+// TODO: remove, probably don't need with redux
+// export function getDeck(id) {
+//   AsyncStorage.getItem(STORAGE_KEY).then(decks => JSON.parse(decks)[id]);
+// }
 
 export function saveDeckTitle(title) {
   return AsyncStorage.mergeItem(

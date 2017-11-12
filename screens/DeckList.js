@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getDecks } from "../utils/api";
+import * as DeckAPI from "../utils/api";
 import { connect } from "react-redux";
 import { receiveDecks, addDeck } from "../actions";
 import { View, FlatList } from "react-native";
@@ -9,13 +9,11 @@ class DeckList extends Component {
   state = {
     ready: false
   };
-  componentDidMount() {
-    const { dispatch } = this.props;
-
-    getDecks()
-      .then(decks => dispatch(receiveDecks(decks)))
+  componentDidMount = () => {
+    DeckAPI.getDecks()
+      .then(decks => this.props.receiveDecks(decks))
       .then(() => this.setState(() => ({ ready: true })));
-  }
+  };
 
   keyExtractor = (item, index) => item.title;
 
@@ -41,7 +39,7 @@ class DeckList extends Component {
 
 function mapStateToProps(decks) {
   const deckArray = [];
-  for (deck in decks) {
+  for (let deck in decks) {
     deckArray.push(decks[deck]);
   }
   return {
@@ -49,4 +47,10 @@ function mapStateToProps(decks) {
   };
 }
 
-export default connect(mapStateToProps)(DeckList);
+function mapDispatchToProps(dispatch) {
+  return {
+    receiveDecks: data => dispatch(receiveDecks(data))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeckList);
