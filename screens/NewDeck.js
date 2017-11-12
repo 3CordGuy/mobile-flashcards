@@ -3,10 +3,12 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  KeyboardAvoidingView
+  Keyboard,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback
 } from "react-native";
 import { white, gray, orange } from "../utils/colors";
-import { saveDeckTitle } from "../utils/api";
+import * as DeckAPI from "../utils/api";
 import TextButton from "../components/TextButton";
 
 export default class NewDeck extends Component {
@@ -17,26 +19,29 @@ export default class NewDeck extends Component {
   addNewDeck = () => {
     const { title } = this.state;
     if (title) {
-      saveDeckTitle(title);
+      DeckAPI.saveDeckTitle(title);
       this.setState({ title: "" });
     }
   };
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container}>
-        <Text style={styles.title}>Deck Title?</Text>
-        <TextInput
-          style={styles.input}
-          autoCorrect={false}
-          placeholder="A great title..."
-          onChangeText={text => this.setState({ title: text })}
-          onSubmitEditing={this.addNewDeck}
-        />
-        <TextButton style={styles.submitButton} onPress={this.addNewDeck}>
-          Submit
-        </TextButton>
-      </KeyboardAvoidingView>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <KeyboardAvoidingView style={styles.container}>
+          <Text style={styles.title}>Deck Title?</Text>
+          <TextInput
+            style={styles.input}
+            autoCorrect={false}
+            placeholder="A great title..."
+            value={this.state.title}
+            onChangeText={text => this.setState({ title: text })}
+            onSubmitEditing={this.addNewDeck}
+          />
+          <TextButton style={styles.submitButton} onPress={this.addNewDeck}>
+            Submit
+          </TextButton>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     );
   }
 }

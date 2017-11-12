@@ -3,10 +3,7 @@ import { View, Platform, StatusBar, StyleSheet } from "react-native";
 import { orange, white } from "./utils/colors";
 import { TabNavigator, StackNavigator } from "react-navigation";
 import { FontAwesome } from "@expo/vector-icons";
-import reducer from "./reducers";
 import { Constants } from "expo";
-import { createStore } from "redux";
-import { Provider } from "react-redux";
 import Deck from "./screens/Deck";
 import DeckList from "./screens/DeckList";
 import NewDeck from "./screens/NewDeck";
@@ -112,15 +109,10 @@ const MainNavigator = StackNavigator({
 export default class App extends React.Component {
   render() {
     return (
-      <Provider store={createStore(reducer)}>
-        <View style={{ flex: 1 }}>
-          <FlashCardStatusBar
-            backgroundColor={orange}
-            barStyle="light-content"
-          />
-          <MainNavigator />
-        </View>
-      </Provider>
+      <View style={{ flex: 1 }}>
+        <FlashCardStatusBar backgroundColor={orange} barStyle="light-content" />
+        <MainNavigator />
+      </View>
     );
   }
 }

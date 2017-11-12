@@ -1,18 +1,24 @@
 import React, { Component } from "react";
 import * as DeckAPI from "../utils/api";
-import { connect } from "react-redux";
-import { receiveDecks, addDeck } from "../actions";
 import { View, FlatList } from "react-native";
 import DeckListItem from "../components/DeckListItem";
 
-class DeckList extends Component {
+export default class DeckList extends Component {
   state = {
-    ready: false
+    ready: false,
+    decks: []
   };
   componentDidMount = () => {
-    DeckAPI.getDecks()
-      .then(decks => this.props.receiveDecks(decks))
-      .then(() => this.setState(() => ({ ready: true })));
+    DeckAPI.getDecks().then(decks => {
+      const deckArray = [];
+      for (let deck in decks) {
+        deckArray.push(decks[deck]);
+      }
+      this.setState({
+        decks: deckArray,
+        ready: true
+      });
+    });
   };
 
   keyExtractor = (item, index) => item.title;
@@ -22,7 +28,7 @@ class DeckList extends Component {
   };
 
   render() {
-    const { decks } = this.props;
+    const { decks } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <FlatList
@@ -36,21 +42,3 @@ class DeckList extends Component {
     );
   }
 }
-
-function mapStateToProps(decks) {
-  const deckArray = [];
-  for (let deck in decks) {
-    deckArray.push(decks[deck]);
-  }
-  return {
-    decks: deckArray
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    receiveDecks: data => dispatch(receiveDecks(data))
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(DeckList);
