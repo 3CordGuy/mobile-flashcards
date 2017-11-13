@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import * as DeckAPI from "../utils/api";
 import { connect } from "react-redux";
-import { receiveDecks, addDeck } from "../actions";
-import { View, FlatList } from "react-native";
+import { receiveDecks, removeDeck } from "../actions";
+import { View, FlatList, ActionSheetIOS } from "react-native";
 import DeckListItem from "../components/DeckListItem";
 
 class DeckList extends Component {
@@ -22,7 +22,8 @@ class DeckList extends Component {
   };
 
   render() {
-    const { decks } = this.props;
+    const { decks, removeDeck } = this.props;
+
     return (
       <View style={{ flex: 1 }}>
         {decks.length > 0 && (
@@ -30,7 +31,22 @@ class DeckList extends Component {
             data={decks}
             keyExtractor={this.keyExtractor}
             renderItem={({ item }) => (
-              <DeckListItem item={item} navigation={this.props.navigation} />
+              <DeckListItem
+                item={item}
+                navigation={this.props.navigation}
+                onLongPress={item => {
+                  ActionSheetIOS.showActionSheetWithOptions(
+                    {
+                      options: ["Delete", "Cancel"],
+                      cancelButtonIndex: 1,
+                      title: "Delete Deck?"
+                    },
+                    (a, b) => {
+                      DeckAPI.removeDeck(item.title, removeDeck(item.title));
+                    }
+                  );
+                }}
+              />
             )}
           />
         )}
@@ -52,7 +68,8 @@ function mapStateToProps(decks) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    receiveDecks: data => dispatch(receiveDecks(data))
+    receiveDecks: data => dispatch(receiveDecks(data)),
+    removeDeck: data => dispatch(removeDeck(data))
   };
 }
 

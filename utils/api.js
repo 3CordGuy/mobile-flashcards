@@ -38,11 +38,18 @@ export function addCardToDeck(title, card) {
   });
 }
 
-export function removeDeck(title) {
+export function removeDeck(title, callback) {
+  console.log("REMOVING DECK", title);
   return AsyncStorage.getItem(STORAGE_KEY).then(results => {
-    const data = JSON.parse(results);
-    data[title] = undefined;
-    delete data[title];
-    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const decks = JSON.parse(results);
+    decks[title] = undefined;
+    delete decks[title];
+
+    console.log("...after delete", decks);
+    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(decks)).then(() => {
+      if (typeof callback === "function") {
+        callback();
+      }
+    });
   });
 }

@@ -2,10 +2,11 @@ import React from "react";
 import { Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
 import { orange, white, gray } from "../utils/colors";
 
-const DeckListItem = ({ item, navigation }) => {
+const DeckListItem = ({ item, navigation, onLongPress }) => {
   return (
     <TouchableOpacity
       style={styles.item}
+      onLongPress={() => onLongPress(item)}
       onPress={() => navigation.navigate("Deck", { deckTitle: item.title })}
     >
       <Text style={styles.deckTitle}>{item.title}</Text>

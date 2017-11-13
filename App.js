@@ -51,23 +51,6 @@ const Tabs = TabNavigator(
           />
         )
       }
-    },
-    Clear: {
-      screen: NewDeck,
-      navigationOptions: {
-        tabBarOnPress: () => {
-          DeckAPI.clearAllDecks();
-        },
-        tabBarLabel: "Clear Decks",
-        tabBarIcon: ({ tintColor }) => (
-          <FontAwesome
-            name="remove"
-            size={30}
-            color={tintColor}
-            style={{ marginBottom: 8 }}
-          />
-        )
-      }
     }
   },
   {
