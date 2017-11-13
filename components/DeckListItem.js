@@ -9,7 +9,9 @@ const DeckListItem = ({ item, navigation }) => {
       onPress={() => navigation.navigate("Deck", { deckTitle: item.title })}
     >
       <Text style={styles.deckTitle}>{item.title}</Text>
-      <Text style={styles.cardCount}>{item.questions.length} Cards</Text>
+      <Text style={styles.cardCount}>
+        {item.questions && item.questions.length} Cards
+      </Text>
     </TouchableOpacity>
   );
 };

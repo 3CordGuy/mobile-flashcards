@@ -25,19 +25,22 @@ class DeckList extends Component {
     const { decks } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <FlatList
-          data={decks}
-          keyExtractor={this.keyExtractor}
-          renderItem={({ item }) => (
-            <DeckListItem item={item} navigation={this.props.navigation} />
-          )}
-        />
+        {decks.length > 0 && (
+          <FlatList
+            data={decks}
+            keyExtractor={this.keyExtractor}
+            renderItem={({ item }) => (
+              <DeckListItem item={item} navigation={this.props.navigation} />
+            )}
+          />
+        )}
       </View>
     );
   }
 }
 
 function mapStateToProps(decks) {
+  console.log("Map state to props...", decks);
   const deckArray = [];
   for (let deck in decks) {
     deckArray.push(decks[deck]);
