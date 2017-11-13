@@ -29,14 +29,16 @@ const initialState = {
 function decks(state = {}, action) {
   switch (action.type) {
     case RECEIVE_DECKS:
+      console.log("[REDUCER] RECEIVE_DECKS", state, action);
       return {
         ...state,
         ...action.decks
       };
     case ADD_DECK:
+      console.log("[REDUCER] ADD_DECK", state, action);
       return {
         ...state,
-        ...action.deck
+        [action.deck.title]: { ...action.deck }
       };
     default:
       return state;

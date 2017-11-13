@@ -9,6 +9,7 @@ export function receiveDecks(decks) {
 }
 
 export function addDeck(deck) {
+  console.log("[ACTION] Adding deck to redux store...", deck);
   return {
     type: ADD_DECK,
     deck
