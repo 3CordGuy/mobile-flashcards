@@ -7,21 +7,24 @@ import {
   TouchableWithoutFeedback,
   Keyboard
 } from "react-native";
+import { connect } from "react-redux";
 import { white, gray, orange } from "../utils/colors";
+import { addDeck } from "../actions";
 import * as DeckAPI from "../utils/api";
 import TextButton from "../components/TextButton";
 
-export default class NewDeck extends Component {
+class NewDeck extends Component {
   state = {
     title: ""
   };
 
   addNewDeck = () => {
     const { title } = this.state;
+    const { addDeck } = this.props;
     if (title) {
-      DeckAPI.saveDeckTitle(title);
-      this.setState({ title: "" });
+      DeckAPI.saveDeckTitle(title).then(deck => addDeck(deck));
     }
+    this.setState({ title: "" });
   };
 
   render() {
@@ -73,3 +76,18 @@ const styles = StyleSheet.create({
     fontSize: 20
   }
 });
+
+// TODO: do we need this in order to map dispatch?
+const mapStateToProps = state => {
+  return {
+    ...state
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addDeck: data => dispatch(addDeck(data))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewDeck);
