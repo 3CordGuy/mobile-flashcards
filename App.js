@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Platform, StatusBar, StyleSheet } from "react-native";
+import { View, Platform, StatusBar } from "react-native";
 import { orange, white } from "./utils/colors";
 import { TabNavigator, StackNavigator } from "react-navigation";
 import { FontAwesome } from "@expo/vector-icons";
@@ -12,6 +12,7 @@ import DeckList from "./screens/DeckList";
 import NewDeck from "./screens/NewDeck";
 import NewQuestion from "./screens/NewQuestion";
 import QuizView from "./screens/QuizView";
+import * as DeckAPI from "./utils/api";
 
 function FlashCardStatusBar({ backgroundColor, ...props }) {
   return (
@@ -44,6 +45,23 @@ const Tabs = TabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <FontAwesome
             name="plus-circle"
+            size={30}
+            color={tintColor}
+            style={{ marginBottom: 8 }}
+          />
+        )
+      }
+    },
+    Clear: {
+      screen: NewDeck,
+      navigationOptions: {
+        tabBarOnPress: () => {
+          DeckAPI.clearAllDecks();
+        },
+        tabBarLabel: "Clear Decks",
+        tabBarIcon: ({ tintColor }) => (
+          <FontAwesome
+            name="remove"
             size={30}
             color={tintColor}
             style={{ marginBottom: 8 }}
