@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import * as DeckAPI from "../utils/api";
 import { connect } from "react-redux";
 import { receiveDecks, removeDeck } from "../actions";
-import { View, FlatList, ActionSheetIOS } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import { gray } from "../utils/colors";
+import { View, Text, FlatList, ActionSheetIOS, StyleSheet } from "react-native";
 import DeckListItem from "../components/DeckListItem";
 
 class DeckList extends Component {
@@ -26,34 +28,50 @@ class DeckList extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        {decks.length > 0 && (
-          <FlatList
-            data={decks}
-            keyExtractor={this.keyExtractor}
-            renderItem={({ item }) => (
-              <DeckListItem
-                item={item}
-                navigation={this.props.navigation}
-                onLongPress={item => {
-                  ActionSheetIOS.showActionSheetWithOptions(
-                    {
-                      options: ["Delete", "Cancel"],
-                      cancelButtonIndex: 1,
-                      title: "Delete Deck?"
-                    },
-                    (a, b) => {
-                      DeckAPI.removeDeck(item.title, removeDeck(item.title));
-                    }
-                  );
-                }}
-              />
-            )}
-          />
-        )}
+        <View style={{ flex: 1 }}>
+          {decks.length > 0 && (
+            <FlatList
+              data={decks}
+              keyExtractor={this.keyExtractor}
+              renderItem={({ item }) => (
+                <DeckListItem
+                  item={item}
+                  navigation={this.props.navigation}
+                  onLongPress={item => {
+                    ActionSheetIOS.showActionSheetWithOptions(
+                      {
+                        options: ["Delete", "Cancel"],
+                        cancelButtonIndex: 1,
+                        title: "Delete Deck?"
+                      },
+                      (a, b) => {
+                        DeckAPI.removeDeck(item.title, removeDeck(item.title));
+                      }
+                    );
+                  }}
+                />
+              )}
+            />
+          )}
+        </View>
+
+        <Text style={styles.helperText}>
+          <FontAwesome name="info-circle" size={16} color={gray} /> Hold Deck to
+          Delete
+        </Text>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  helperText: {
+    textAlign: "center",
+    padding: 10,
+    fontSize: 16,
+    color: gray
+  }
+});
 
 function mapStateToProps(decks) {
   console.log("Map state to props...", decks);

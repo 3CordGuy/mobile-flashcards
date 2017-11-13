@@ -40,7 +40,10 @@ class NewDeck extends Component {
             onChangeText={text => this.setState({ title: text })}
             onSubmitEditing={this.addNewDeck}
           />
-          <TextButton style={styles.submitButton} onPress={this.addNewDeck}>
+          <TextButton
+            style={[styles.submitButton, styles.button]}
+            onPress={this.addNewDeck}
+          >
             Submit
           </TextButton>
         </KeyboardAvoidingView>
@@ -74,6 +77,19 @@ const styles = StyleSheet.create({
     margin: 40,
     padding: 20,
     fontSize: 20
+  },
+  button: {
+    padding: 20,
+    fontSize: 20,
+    borderRadius: 8,
+    shadowRadius: 8,
+    shadowOpacity: 0.8,
+    overflow: "hidden",
+    shadowColor: "rgba(0, 0, 0, 0.24)",
+    shadowOffset: {
+      width: 0,
+      height: 3
+    }
   }
 });
 

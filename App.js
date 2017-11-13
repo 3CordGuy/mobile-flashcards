@@ -44,7 +44,7 @@ const Tabs = TabNavigator(
         tabBarLabel: "Create Deck",
         tabBarIcon: ({ tintColor }) => (
           <FontAwesome
-            name="plus-circle"
+            name="plus"
             size={30}
             color={tintColor}
             style={{ marginBottom: 8 }}
