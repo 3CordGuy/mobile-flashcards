@@ -12,11 +12,17 @@ class Quiz extends Component {
     };
   };
 
-  state = {};
-
-  componentDidMount = () => {
-    console.log(this.props);
+  state = {
+    front: true,
+    currentCard: 0,
+    answers: []
   };
+
+  // componentDidMount = () => {
+  //   console.log(this.props);
+  //   const { deck } = this.props;
+  //   this.setState({ totalCards: deck.questions.length });
+  // };
   // showAddCard = () => {
   //   const { navigation } = this.props;
   //   navigation.navigate("NewQuestion", {
@@ -24,23 +30,81 @@ class Quiz extends Component {
   //   });
   // };
 
+  nextCard = answer => {
+    this.setState(prevState => {
+      return {
+        currentCard: prevState.currentCard + 1,
+        answer: prevState.answers.push(answer),
+        front: true
+      };
+    });
+  };
+
+  flipCard = () => {
+    this.setState(prevState => {
+      return {
+        front: !prevState.front
+      };
+    });
+  };
+
+  sumAnswers = () => {
+    const answers = this.state.answers;
+    const sum = answers.reduce((x, y) => x + y);
+    return sum;
+  };
+
   render() {
-    const { deck } = this.props;
+    const { deck, navigation } = this.props;
+    const { front, currentCard } = this.state;
+    const card = deck.questions[this.state.currentCard] || "done";
+
+    if (card === "done") {
+      return (
+        <View style={styles.deckCard}>
+          <View style={styles.container}>
+            <Text style={styles.question}>Quiz Complete!</Text>
+            <View style={styles.resultsContainer}>
+              <Text style={styles.resultsTitle}>
+                {this.sumAnswers()} out of {deck.questions.length}
+              </Text>
+              <Text style={[styles.resultsTitle, { color: gray }]}>
+                Accuracy {this.sumAnswers() / deck.questions.length * 100}%
+              </Text>
+            </View>
+          </View>
+          <View style={styles.answerButtonsContainer}>
+            <TextButton
+              style={[styles.button, styles.correctButton]}
+              onPress={() => navigation.goBack()}
+            >
+              Done
+            </TextButton>
+          </View>
+        </View>
+      );
+    }
+
     return (
       <View style={styles.deckCard}>
         <View style={styles.container}>
-          <Text style={styles.title}>{deck.title}</Text>
-          <Text style={styles.subtitle}>
-            {deck.questions && deck.questions.length} Cards
+          <Text style={front ? styles.question : styles.answer}>
+            {front ? card.question : card.answer}
           </Text>
         </View>
         <View style={styles.buttonContainer}>
-          <TextButton style={[styles.button, { color: gray }]}>
+          <TextButton
+            style={[styles.button, { color: gray }]}
+            onPress={this.flipCard}
+          >
             Flip Card
           </TextButton>
         </View>
         <View style={styles.answerButtonsContainer}>
-          <TextButton style={[styles.button, styles.incorrectButton]}>
+          <TextButton
+            style={[styles.button, styles.incorrectButton]}
+            onPress={() => this.nextCard(0)}
+          >
             <FontAwesome
               name="thumbs-down"
               size={20}
@@ -51,7 +115,7 @@ class Quiz extends Component {
           </TextButton>
           <TextButton
             style={[styles.button, styles.correctButton]}
-            onPress={this.showAddCard}
+            onPress={() => this.nextCard(1)}
           >
             <FontAwesome
               name="thumbs-up"
@@ -61,6 +125,11 @@ class Quiz extends Component {
             />{" "}
             Correct!
           </TextButton>
+        </View>
+        <View style={styles.progressContainer}>
+          <Text style={{ color: orange, textAlign: "center" }}>
+            {currentCard + 1} of {deck.questions.length}
+          </Text>
         </View>
       </View>
     );
@@ -86,6 +155,22 @@ const styles = StyleSheet.create({
       height: 3
     }
   },
+  resultsContainer: {
+    borderWidth: 1,
+    borderRadius: 6,
+    borderColor: gray,
+    padding: 20,
+    margin: 10
+  },
+  resultsTitle: {
+    fontSize: 30,
+    textAlign: "center",
+    color: orange
+  },
+  progressContainer: {
+    justifyContent: "center",
+    flexDirection: "row"
+  },
   container: {
     flex: 1,
     justifyContent: "center"
@@ -97,14 +182,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: white
   },
-  title: {
+  question: {
     fontSize: 40,
     textAlign: "center"
   },
-  subtitle: {
-    fontSize: 20,
-    textAlign: "center",
-    color: gray
+  answer: {
+    fontSize: 40,
+    fontWeight: "bold",
+    textAlign: "center"
   },
   button: {
     padding: 20,
