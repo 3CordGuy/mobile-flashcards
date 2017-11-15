@@ -27,6 +27,7 @@ class NewQuestion extends Component {
     if (question && answer) {
       DeckAPI.addCardToDeck(title, { question, answer }).then(() => {
         addCard({ title, card: { question, answer } });
+        Keyboard.dismiss();
         navigation.goBack();
       });
     }

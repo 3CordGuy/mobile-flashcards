@@ -20,11 +20,13 @@ class NewDeck extends Component {
 
   addNewDeck = () => {
     const { title } = this.state;
-    const { addDeck } = this.props;
+    const { addDeck, navigation } = this.props;
     if (title) {
       DeckAPI.saveDeckTitle(title).then(deck => addDeck(deck));
     }
     this.setState({ title: "" });
+    Keyboard.dismiss();
+    navigation.goBack();
   };
 
   render() {
