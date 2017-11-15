@@ -42,10 +42,16 @@ class DeckList extends Component {
                       {
                         options: ["Delete", "Cancel"],
                         cancelButtonIndex: 1,
+                        destructiveButtonIndex: 0,
                         title: "Delete Deck?"
                       },
-                      (a, b) => {
-                        DeckAPI.removeDeck(item.title, removeDeck(item.title));
+                      choice => {
+                        if (choice === 0) {
+                          DeckAPI.removeDeck(
+                            item.title,
+                            removeDeck(item.title)
+                          );
+                        }
                       }
                     );
                   }}
@@ -56,7 +62,7 @@ class DeckList extends Component {
         </View>
 
         <Text style={styles.helperText}>
-          <FontAwesome name="info-circle" size={16} color={gray} /> Hold Deck to
+          <FontAwesome name="info-circle" size={14} color={gray} /> Hold Deck to
           Delete
         </Text>
       </View>
@@ -68,7 +74,7 @@ const styles = StyleSheet.create({
   helperText: {
     textAlign: "center",
     padding: 10,
-    fontSize: 16,
+    fontSize: 14,
     color: gray
   }
 });
