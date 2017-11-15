@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Platform } from "react-native";
 import { white, orange, gray } from "../utils/colors";
 import { connect } from "react-redux";
 import TextButton from "../components/TextButton";
@@ -11,14 +11,24 @@ class Deck extends Component {
     };
   };
 
-  componentDidMount = () => {
-    console.log("did mount...", this.props);
+  showAddCard = () => {
+    const { navigation } = this.props;
+    navigation.navigate("NewQuestion", {
+      deckTitle: navigation.state.params.deckTitle
+    });
+  };
+
+  startQuiz = () => {
+    const { navigation } = this.props;
+    navigation.navigate("QuizView", {
+      deckTitle: navigation.state.params.deckTitle
+    });
   };
 
   render() {
     const { deck } = this.props;
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.deckCard}>
         <View style={styles.container}>
           <Text style={styles.title}>{deck.title}</Text>
           <Text style={styles.subtitle}>
@@ -26,10 +36,16 @@ class Deck extends Component {
           </Text>
         </View>
         <View style={styles.buttonContainer}>
-          <TextButton style={[styles.button, styles.addCardButton]}>
+          <TextButton
+            style={[styles.button, styles.addCardButton]}
+            onPress={this.showAddCard}
+          >
             Add Card
           </TextButton>
-          <TextButton style={[styles.button, styles.startQuizButton]}>
+          <TextButton
+            style={[styles.button, styles.startQuizButton]}
+            onPress={this.startQuiz}
+          >
             Start Quiz
           </TextButton>
         </View>
@@ -39,14 +55,30 @@ class Deck extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  deckCard: {
     flex: 1,
     justifyContent: "center",
     backgroundColor: white,
-    padding: 15
+    borderRadius: Platform.OS === "ios" ? 16 : 2,
+    padding: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 20,
+    marginBottom: 20,
+    shadowRadius: 3,
+    shadowOpacity: 0.8,
+    shadowColor: "rgba(0, 0, 0, 0.24)",
+    shadowOffset: {
+      width: 0,
+      height: 3
+    }
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center"
   },
   buttonContainer: {
-    flex: 2,
+    flex: 1,
     justifyContent: "center",
     flexDirection: "row",
     alignItems: "center",

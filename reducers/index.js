@@ -1,4 +1,4 @@
-import { RECEIVE_DECKS, ADD_DECK, REMOVE_DECK } from "../actions";
+import { RECEIVE_DECKS, ADD_DECK, REMOVE_DECK, ADD_CARD } from "../actions";
 
 const initialState = {
   React: {
@@ -46,6 +46,14 @@ function decks(state = {}, action) {
       delete decks[action.title];
       return {
         ...decks
+      };
+    case ADD_CARD:
+      console.log("[REDUCER] ADD_CARD", state, action);
+      const deck = state[action.title];
+      deck.questions.push(action.card);
+      return {
+        ...state,
+        [action.title]: { ...deck }
       };
     default:
       return state;
