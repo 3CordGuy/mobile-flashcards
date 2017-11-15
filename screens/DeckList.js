@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(decks) {
-  console.log("Map state to props...", decks);
   const deckArray = [];
   for (let deck in decks) {
     deckArray.push(decks[deck]);
