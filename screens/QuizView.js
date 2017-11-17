@@ -18,18 +18,6 @@ class Quiz extends Component {
     answers: []
   };
 
-  // componentDidMount = () => {
-  //   console.log(this.props);
-  //   const { deck } = this.props;
-  //   this.setState({ totalCards: deck.questions.length });
-  // };
-  // showAddCard = () => {
-  //   const { navigation } = this.props;
-  //   navigation.navigate("NewQuestion", {
-  //     deckTitle: navigation.state.params.deckTitle
-  //   });
-  // };
-
   nextCard = answer => {
     this.setState(prevState => {
       return {

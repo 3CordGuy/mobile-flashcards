@@ -3,6 +3,10 @@ import { View, Text, StyleSheet, Platform } from "react-native";
 import { white, orange, gray } from "../utils/colors";
 import { connect } from "react-redux";
 import TextButton from "../components/TextButton";
+import {
+  clearLocalNotification,
+  setLocalNotification
+} from "../utils/notification";
 
 class Deck extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -23,6 +27,7 @@ class Deck extends Component {
     navigation.navigate("QuizView", {
       deckTitle: navigation.state.params.deckTitle
     });
+    clearLocalNotification().then(setLocalNotification);
   };
 
   render() {
