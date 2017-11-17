@@ -4,7 +4,15 @@ import { connect } from "react-redux";
 import { receiveDecks, removeDeck } from "../actions";
 import { FontAwesome } from "@expo/vector-icons";
 import { gray } from "../utils/colors";
-import { View, Text, FlatList, ActionSheetIOS, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  ActionSheetIOS,
+  StyleSheet,
+  Platform,
+  Alert
+} from "react-native";
 import DeckListItem from "../components/DeckListItem";
 
 class DeckList extends Component {
@@ -23,8 +31,42 @@ class DeckList extends Component {
     return <DeckListItem item={item} />;
   };
 
+  onLongPress = item => {
+    const { removeDeck } = this.props;
+    if (Platform.OS === "ios") {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ["Delete", "Cancel"],
+          cancelButtonIndex: 1,
+          destructiveButtonIndex: 0,
+          title: "Delete Deck?",
+          message: "This will remove the deck and all cards..."
+        },
+        choice => {
+          if (choice === 0) {
+            DeckAPI.removeDeck(item.title, removeDeck(item.title));
+          }
+        }
+      );
+    } else if (Platform.OS === "android") {
+      Alert.alert(
+        `Delete Deck "${item.title}"`,
+        "This will remove the deck and all cards...",
+        [
+          {
+            text: "Delete",
+            onPress: () => {
+              DeckAPI.removeDeck(item.title, removeDeck(item.title));
+            }
+          },
+          { text: "Cancel" }
+        ]
+      );
+    }
+  };
+
   render() {
-    const { decks, removeDeck } = this.props;
+    const { decks } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
@@ -37,24 +79,7 @@ class DeckList extends Component {
                 <DeckListItem
                   item={item}
                   navigation={this.props.navigation}
-                  onLongPress={item => {
-                    ActionSheetIOS.showActionSheetWithOptions(
-                      {
-                        options: ["Delete", "Cancel"],
-                        cancelButtonIndex: 1,
-                        destructiveButtonIndex: 0,
-                        title: "Delete Deck?"
-                      },
-                      choice => {
-                        if (choice === 0) {
-                          DeckAPI.removeDeck(
-                            item.title,
-                            removeDeck(item.title)
-                          );
-                        }
-                      }
-                    );
-                  }}
+                  onLongPress={this.onLongPress}
                 />
               )}
             />
