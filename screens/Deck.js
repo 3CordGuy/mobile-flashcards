@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 20,
     margin: 10,
-    borderRadius: 8,
+    borderRadius: Platform.OS === "ios" ? 8 : 2,
     shadowRadius: 8,
     shadowOpacity: 0.8,
     shadowColor: "rgba(0, 0, 0, 0.24)",

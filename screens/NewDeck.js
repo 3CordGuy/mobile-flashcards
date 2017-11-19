@@ -5,7 +5,8 @@ import {
   TextInput,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Platform
 } from "react-native";
 import { connect } from "react-redux";
 import { white, gray, orange } from "../utils/colors";
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 20,
     fontSize: 20,
-    borderRadius: 8,
+    borderRadius: Platform.OS === "ios" ? 8 : 2,
     shadowRadius: 8,
     shadowOpacity: 0.8,
     overflow: "hidden",
