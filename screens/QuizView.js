@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Platform } from "react-native";
+import { View, Text, StyleSheet, Platform, Animated } from "react-native";
 import { white, orange, gray } from "../utils/colors";
 import { connect } from "react-redux";
 import TextButton from "../components/TextButton";
@@ -14,12 +14,44 @@ class Quiz extends Component {
 
   state = {
     front: true,
+    flipValueFront: new Animated.Value(0),
     currentCard: 0,
     answers: []
   };
 
+  componentDidMount = () => {
+    const { flipValueFront } = this.state;
+    flipValueFront.addListener(({ value }) => {
+      if (value >= 180) {
+        this.setState(prevState => {
+          return {
+            front: false
+          };
+        });
+      } else if (value <= 180) {
+        this.setState(prevState => {
+          return {
+            front: true
+          };
+        });
+      }
+    });
+  };
+
+  componentWillUnmount = () => {
+    const { flipValueFront } = this.state;
+    flipValueFront.removeAllListeners();
+  };
+
   nextCard = answer => {
     this.setState(prevState => {
+      // If card is flipped, flip it back
+      if (!prevState.front) {
+        Animated.timing(prevState.flipValueFront, {
+          toValue: 0,
+          duration: 1
+        }).start();
+      }
       return {
         currentCard: prevState.currentCard + 1,
         answer: prevState.answers.push(answer),
@@ -29,11 +61,17 @@ class Quiz extends Component {
   };
 
   flipCard = () => {
-    this.setState(prevState => {
-      return {
-        front: !prevState.front
-      };
-    });
+    if (this.state.front) {
+      Animated.timing(this.state.flipValueFront, {
+        toValue: 360,
+        duration: 500
+      }).start();
+    } else {
+      Animated.timing(this.state.flipValueFront, {
+        toValue: 0,
+        duration: 500
+      }).start();
+    }
   };
 
   sumAnswers = () => {
@@ -44,8 +82,18 @@ class Quiz extends Component {
 
   render() {
     const { deck, navigation } = this.props;
-    const { front, currentCard } = this.state;
+    const { front, currentCard, flipValueFront } = this.state;
     const card = deck.questions[this.state.currentCard] || "done";
+    const frontAnimatedStyle = {
+      transform: [
+        {
+          rotateY: this.state.flipValueFront.interpolate({
+            inputRange: [0, 180],
+            outputRange: ["0deg", "180deg"]
+          })
+        }
+      ]
+    };
 
     if (card === "done") {
       return (
@@ -74,12 +122,15 @@ class Quiz extends Component {
     }
 
     return (
-      <View style={styles.deckCard}>
-        <View style={styles.container}>
-          <Text style={front ? styles.question : styles.answer}>
-            {front ? card.question : card.answer}
-          </Text>
-        </View>
+      <View style={{ flex: 1 }}>
+        <Animated.View style={[styles.deckCard, frontAnimatedStyle]}>
+          <View style={styles.container}>
+            <Text style={styles.label}>{front ? "Question:" : "Answer:"}</Text>
+            <Text style={front ? styles.question : styles.answer}>
+              {front ? card.question : card.answer}
+            </Text>
+          </View>
+        </Animated.View>
         <View style={styles.buttonContainer}>
           <TextButton
             style={[styles.button, { color: gray }]}
@@ -116,7 +167,7 @@ class Quiz extends Component {
         </View>
         <View style={styles.progressContainer}>
           <Text style={{ color: orange, textAlign: "center" }}>
-            {currentCard + 1} of {deck.questions.length}
+            Card {currentCard + 1} of {deck.questions.length}
           </Text>
         </View>
       </View>
@@ -126,7 +177,7 @@ class Quiz extends Component {
 
 const styles = StyleSheet.create({
   deckCard: {
-    flex: 1,
+    flex: 3,
     justifyContent: "center",
     backgroundColor: white,
     borderRadius: Platform.OS === "ios" ? 16 : 2,
@@ -141,7 +192,12 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 0,
       height: 3
-    }
+    },
+    backfaceVisibility: "hidden"
+  },
+  deckCardBack: {
+    position: "absolute",
+    top: 0
   },
   resultsContainer: {
     borderWidth: 1,
@@ -157,7 +213,8 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     justifyContent: "center",
-    flexDirection: "row"
+    flexDirection: "row",
+    paddingBottom: 20
   },
   container: {
     flex: 1,
@@ -167,8 +224,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: white
+    alignItems: "center"
+  },
+  label: {
+    fontSize: 30,
+    color: gray,
+    textAlign: "center"
   },
   question: {
     fontSize: 40,
@@ -183,7 +244,7 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 20,
     margin: 10,
-    borderRadius: 8,
+    borderRadius: Platform.OS === "ios" ? 8 : 2,
     shadowRadius: 8,
     shadowOpacity: 0.8,
     shadowColor: "rgba(0, 0, 0, 0.24)",
