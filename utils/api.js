@@ -1,6 +1,6 @@
 import { AsyncStorage } from "react-native";
 
-export const STORAGE_KEY = "mobileflashcards:decks";
+export const STORAGE_KEY = "quizcards:decks";
 
 // For Development only
 // export function clearAllDecks(callback) {

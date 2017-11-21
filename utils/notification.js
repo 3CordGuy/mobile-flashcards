@@ -1,7 +1,7 @@
 import { AsyncStorage } from "react-native";
 import { Permissions, Notifications } from "expo";
 
-const NOTIFICATION_KEY = "supermobileflashcards:notifications";
+const NOTIFICATION_KEY = "quizcards:notifications";
 
 function createNotification() {
   return {
