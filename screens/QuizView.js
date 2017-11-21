@@ -105,7 +105,8 @@ class Quiz extends Component {
                 {this.sumAnswers()} out of {deck.questions.length}
               </Text>
               <Text style={[styles.resultsTitle, { color: gray }]}>
-                Accuracy {this.sumAnswers() / deck.questions.length * 100}%
+                Accuracy{" "}
+                {(this.sumAnswers() / deck.questions.length * 100).toFixed(0)}%
               </Text>
             </View>
           </View>
