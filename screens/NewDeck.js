@@ -23,11 +23,13 @@ class NewDeck extends Component {
     const { title } = this.state;
     const { addDeck, navigation } = this.props;
     if (title) {
-      DeckAPI.saveDeckTitle(title).then(deck => addDeck(deck));
+      DeckAPI.saveDeckTitle(title).then(deck => {
+        addDeck(deck);
+        this.setState({ title: "" });
+        Keyboard.dismiss();
+        navigation.navigate("Deck", { deckTitle: title });
+      });
     }
-    this.setState({ title: "" });
-    Keyboard.dismiss();
-    navigation.goBack();
   };
 
   render() {
