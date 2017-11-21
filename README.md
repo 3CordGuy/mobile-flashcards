@@ -10,21 +10,23 @@ This app lets you create flash cards for quizzing yourself on any topic.
 
 ![flashcards-app](https://user-images.githubusercontent.com/30707961/33050137-f6f5b712-ce28-11e7-96f8-e7f67cf1272e.jpg)
 
-#### How to install/run the app
 Built with `create-react-native-app`
 
-#### How to install/run the app
-- install the expo app on your device from the app store
+#### How to install / run the app
+- install the _expo_ app on your device from the app store
+    - [Get it for iOS](https://itunes.apple.com/app/apple-store/id982107779?ct=www&mt=8)
+    - [Get it for android](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www)
 - start expo app on your device
 - on your computer's terminal run the following:
 
-`
+```
 git clone https://github.com/3CordGuy/mobile-flashcards.git
 cd mobile-flashcards
 yarn install
-yarn start //Starts the crna/expo app server
-// Follow the prompts
-`
+yarn start
+```
+- You should now have the app server running from your computer's terminal (See terminal prompts)
+- You can load the flashcards app into Expo by scanning the QR code from the terminal or typing in the IP address as prompted
 
 #### How to contribute
 

@@ -1,5 +1,16 @@
 {
   "expo": {
-    "sdkVersion": "22.0.0"
+    "sdkVersion": "22.0.0",
+    "orientation": "portrait",
+    "name": "QuizCards Mobile",
+    "description": "The best flashcards app.",
+    "slug": "quizcards-mobile-flashcards",
+    "version": "1.0",
+    "ios": {
+      "bundleIdentifier": "org.quizcards.exp"
+    },
+    "android": {
+      "package": "org.quizcards.exp"
+    }
   }
 }
