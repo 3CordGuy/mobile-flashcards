@@ -60,6 +60,14 @@ class Quiz extends Component {
     });
   };
 
+  startOver = () => {
+    this.setState({
+      front: true,
+      currentCard: 0,
+      answers: []
+    });
+  };
+
   flipCard = () => {
     if (this.state.front) {
       Animated.timing(this.state.flipValueFront, {
@@ -111,6 +119,12 @@ class Quiz extends Component {
             </View>
           </View>
           <View style={styles.answerButtonsContainer}>
+            <TextButton
+              style={[styles.button, styles.correctButton]}
+              onPress={this.startOver}
+            >
+              Try Again
+            </TextButton>
             <TextButton
               style={[styles.button, styles.correctButton]}
               onPress={() => navigation.goBack()}
