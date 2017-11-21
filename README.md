@@ -8,7 +8,7 @@ This app lets you create flash cards for quizzing yourself on any topic.
 - Daily Reminders for Quizzing
 - More features to come...
 
-![flashcards-app](https://user-images.githubusercontent.com/30707961/33050046-83d7c734-ce28-11e7-8818-4a0997bbb025.jpg)
+![flashcards-app](https://user-images.githubusercontent.com/30707961/33050137-f6f5b712-ce28-11e7-96f8-e7f67cf1272e.jpg)
 
 #### How to install/run the app
 Built with `create-react-native-app`
