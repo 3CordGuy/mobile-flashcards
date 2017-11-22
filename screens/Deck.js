@@ -42,17 +42,25 @@ class Deck extends Component {
         </View>
         <View style={styles.buttonContainer}>
           <TextButton
-            style={[styles.button, styles.addCardButton]}
+            style={[
+              styles.button,
+              deck.questions && deck.questions.length > 0
+                ? styles.addCardButton
+                : styles.startQuizButton
+            ]}
             onPress={this.showAddCard}
           >
             Add Card
           </TextButton>
-          <TextButton
-            style={[styles.button, styles.startQuizButton]}
-            onPress={this.startQuiz}
-          >
-            Start Quiz
-          </TextButton>
+          {deck.questions &&
+            deck.questions.length > 0 && (
+              <TextButton
+                style={[styles.button, styles.startQuizButton]}
+                onPress={this.startQuiz}
+              >
+                Start Quiz
+              </TextButton>
+            )}
         </View>
       </View>
     );
