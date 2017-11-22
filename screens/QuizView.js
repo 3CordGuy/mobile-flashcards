@@ -4,6 +4,7 @@ import { white, orange, gray } from "../utils/colors";
 import { connect } from "react-redux";
 import TextButton from "../components/TextButton";
 import { FontAwesome } from "@expo/vector-icons";
+import commonStyles from "../utils/common-style";
 
 class Quiz extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -120,13 +121,13 @@ class Quiz extends Component {
           </View>
           <View style={styles.answerButtonsContainer}>
             <TextButton
-              style={[styles.button, styles.correctButton]}
+              style={[commonStyles.button, styles.correctButton]}
               onPress={this.startOver}
             >
               Try Again
             </TextButton>
             <TextButton
-              style={[styles.button, styles.correctButton]}
+              style={[commonStyles.button, styles.correctButton]}
               onPress={() => navigation.goBack()}
             >
               Done
@@ -148,7 +149,7 @@ class Quiz extends Component {
         </Animated.View>
         <View style={styles.buttonContainer}>
           <TextButton
-            style={[styles.button, { color: gray }]}
+            style={[commonStyles.button, { color: gray }]}
             onPress={this.flipCard}
           >
             Flip Card
@@ -156,7 +157,7 @@ class Quiz extends Component {
         </View>
         <View style={styles.answerButtonsContainer}>
           <TextButton
-            style={[styles.button, styles.incorrectButton]}
+            style={[commonStyles.button, styles.incorrectButton]}
             onPress={() => this.nextCard(0)}
           >
             <FontAwesome
@@ -168,7 +169,7 @@ class Quiz extends Component {
             Incorrect!
           </TextButton>
           <TextButton
-            style={[styles.button, styles.correctButton]}
+            style={[commonStyles.button, styles.correctButton]}
             onPress={() => this.nextCard(1)}
           >
             <FontAwesome
@@ -254,20 +255,6 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: "bold",
     textAlign: "center"
-  },
-  button: {
-    padding: 20,
-    fontSize: 20,
-    margin: 10,
-    borderRadius: Platform.OS === "ios" ? 8 : 2,
-    shadowRadius: 8,
-    shadowOpacity: 0.8,
-    shadowColor: "rgba(0, 0, 0, 0.24)",
-    shadowOffset: {
-      width: 0,
-      height: 3
-    },
-    overflow: "hidden"
   },
   incorrectButton: {
     backgroundColor: white,

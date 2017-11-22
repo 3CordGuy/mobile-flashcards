@@ -7,6 +7,7 @@ import {
   clearLocalNotification,
   setLocalNotification
 } from "../utils/notification";
+import commonStyles from "../utils/common-style";
 
 class Deck extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -43,7 +44,7 @@ class Deck extends Component {
         <View style={styles.buttonContainer}>
           <TextButton
             style={[
-              styles.button,
+              commonStyles.button,
               deck.questions && deck.questions.length > 0
                 ? styles.addCardButton
                 : styles.startQuizButton
@@ -55,7 +56,7 @@ class Deck extends Component {
           {deck.questions &&
             deck.questions.length > 0 && (
               <TextButton
-                style={[styles.button, styles.startQuizButton]}
+                style={[commonStyles.button, styles.startQuizButton]}
                 onPress={this.startQuiz}
               >
                 Start Quiz
@@ -105,20 +106,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     color: gray
-  },
-  button: {
-    padding: 20,
-    fontSize: 20,
-    margin: 10,
-    borderRadius: Platform.OS === "ios" ? 8 : 2,
-    shadowRadius: 8,
-    shadowOpacity: 0.8,
-    shadowColor: "rgba(0, 0, 0, 0.24)",
-    shadowOffset: {
-      width: 0,
-      height: 3
-    },
-    overflow: "hidden"
   },
   addCardButton: {
     backgroundColor: white,

@@ -14,6 +14,7 @@ import { white, gray, orange } from "../utils/colors";
 import { addCard } from "../actions";
 import * as DeckAPI from "../utils/api";
 import TextButton from "../components/TextButton";
+import commonStyles from "../utils/common-style";
 
 class NewQuestion extends Component {
   state = {
@@ -41,7 +42,7 @@ class NewQuestion extends Component {
           <View style={styles.deckCard}>
             <Text style={styles.title}>Add a Question</Text>
             <TextInput
-              style={styles.input}
+              style={commonStyles.input}
               autoCorrect={true}
               placeholder="Your Question..."
               value={this.state.title}
@@ -49,7 +50,7 @@ class NewQuestion extends Component {
               returnKeyType="next"
             />
             <TextInput
-              style={styles.input}
+              style={commonStyles.input}
               autoCorrect={true}
               placeholder="The Answer..."
               value={this.state.title}
@@ -57,7 +58,7 @@ class NewQuestion extends Component {
               onSubmitEditing={this.addNewQuestion}
             />
             <TextButton
-              style={[styles.submitButton, styles.button]}
+              style={[commonStyles.button, styles.submitButton]}
               onPress={this.addNewQuestion}
             >
               Submit
@@ -96,33 +97,11 @@ const styles = StyleSheet.create({
     fontSize: 34,
     textAlign: "center"
   },
-  input: {
-    padding: 15,
-    height: 60,
-    marginTop: 20,
-    marginLeft: 40,
-    marginRight: 40,
-    borderColor: gray,
-    borderWidth: 1
-  },
   submitButton: {
     backgroundColor: orange,
     margin: 40,
     padding: 20,
     fontSize: 20
-  },
-  button: {
-    padding: 20,
-    fontSize: 20,
-    borderRadius: 8,
-    shadowRadius: 8,
-    shadowOpacity: 0.8,
-    overflow: "hidden",
-    shadowColor: "rgba(0, 0, 0, 0.24)",
-    shadowOffset: {
-      width: 0,
-      height: 3
-    }
   }
 });
 
