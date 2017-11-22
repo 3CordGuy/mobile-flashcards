@@ -63,11 +63,13 @@ class NewQuestion extends Component {
               autoCorrect={true}
               placeholder="Your Question..."
               value={this.state.title}
+              onSubmitEditing={() => this.refs.AnswerInput.focus()}
               onChangeText={text =>
                 this.setState({ question: text, questionError: false })}
               returnKeyType="next"
             />
             <TextInput
+              ref="AnswerInput"
               style={[
                 commonStyles.input,
                 answerError ? { borderColor: red } : ""
@@ -78,6 +80,7 @@ class NewQuestion extends Component {
               onChangeText={text =>
                 this.setState({ answer: text, answerError: false })}
               onSubmitEditing={this.addNewQuestion}
+              returnKeyType="done"
             />
             <TextButton
               style={[commonStyles.button, styles.submitButton]}
