@@ -95,7 +95,7 @@ class Quiz extends Component {
     const frontAnimatedStyle = {
       transform: [
         {
-          rotateY: this.state.flipValueFront.interpolate({
+          rotateY: flipValueFront.interpolate({
             inputRange: [0, 180],
             outputRange: ["0deg", "180deg"]
           })
