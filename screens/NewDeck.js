@@ -8,7 +8,7 @@ import {
   Keyboard
 } from "react-native";
 import { connect } from "react-redux";
-import { white, gray } from "../utils/colors";
+import { white, red } from "../utils/colors";
 import { addDeck } from "../actions";
 import * as DeckAPI from "../utils/api";
 import TextButton from "../components/TextButton";
@@ -16,7 +16,8 @@ import commonStyles from "../utils/common-style";
 
 class NewDeck extends Component {
   state = {
-    title: ""
+    title: "",
+    error: false
   };
 
   addNewDeck = () => {
@@ -25,28 +26,31 @@ class NewDeck extends Component {
     if (title) {
       DeckAPI.saveDeckTitle(title).then(deck => {
         addDeck(deck);
-        this.setState({ title: "" });
+        this.setState({ title: "", error: false });
         Keyboard.dismiss();
         navigation.navigate("Deck", { deckTitle: title });
       });
+    } else {
+      this.setState({ error: true });
     }
   };
 
   render() {
+    const { error } = this.state;
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <KeyboardAvoidingView style={styles.container}>
           <Text style={styles.title}>Deck Title?</Text>
           <TextInput
-            style={commonStyles.input}
+            style={[commonStyles.input, error ? { borderColor: red } : ""]}
             autoCorrect={false}
             placeholder="A great title..."
             value={this.state.title}
-            onChangeText={text => this.setState({ title: text })}
+            onChangeText={text => this.setState({ title: text, error: false })}
             onSubmitEditing={this.addNewDeck}
           />
           <TextButton
-            style={[commonStyles.submitButton, commonStyles.button]}
+            style={[commonStyles.button, commonStyles.submitButton]}
             onPress={this.addNewDeck}
           >
             Submit

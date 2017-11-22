@@ -10,7 +10,7 @@ import {
   Platform
 } from "react-native";
 import { connect } from "react-redux";
-import { white, gray, orange } from "../utils/colors";
+import { white, red, orange } from "../utils/colors";
 import { addCard } from "../actions";
 import * as DeckAPI from "../utils/api";
 import TextButton from "../components/TextButton";
@@ -19,7 +19,9 @@ import commonStyles from "../utils/common-style";
 class NewQuestion extends Component {
   state = {
     question: "",
-    answer: ""
+    questionError: false,
+    answer: "",
+    answerError: false
   };
 
   addNewQuestion = () => {
@@ -28,33 +30,53 @@ class NewQuestion extends Component {
     if (question && answer) {
       DeckAPI.addCardToDeck(title, { question, answer }).then(() => {
         addCard({ title, card: { question, answer } });
+        this.setState({
+          question: "",
+          questionError: false,
+          answer: "",
+          answerError: false
+        });
         Keyboard.dismiss();
         navigation.goBack();
       });
+    } else {
+      this.setState({
+        questionError: question ? false : true,
+        answerError: answer ? false : true
+      });
     }
-    this.setState({ question: "", answer: "" });
   };
 
   render() {
+    const { questionError, answerError } = this.state;
+
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.deckCard}>
             <Text style={styles.title}>Add a Question</Text>
             <TextInput
-              style={commonStyles.input}
+              style={[
+                commonStyles.input,
+                questionError ? { borderColor: red } : ""
+              ]}
               autoCorrect={true}
               placeholder="Your Question..."
               value={this.state.title}
-              onChangeText={text => this.setState({ question: text })}
+              onChangeText={text =>
+                this.setState({ question: text, questionError: false })}
               returnKeyType="next"
             />
             <TextInput
-              style={commonStyles.input}
+              style={[
+                commonStyles.input,
+                answerError ? { borderColor: red } : ""
+              ]}
               autoCorrect={true}
               placeholder="The Answer..."
               value={this.state.title}
-              onChangeText={text => this.setState({ answer: text })}
+              onChangeText={text =>
+                this.setState({ answer: text, answerError: false })}
               onSubmitEditing={this.addNewQuestion}
             />
             <TextButton
